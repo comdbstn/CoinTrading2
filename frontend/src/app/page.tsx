@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { Container, TextField, Button, Typography, Input, Box } from '@mui/material';
 import Image from "next/image";
