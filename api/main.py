@@ -61,7 +61,9 @@ async def coin_data():
         data = get_real_time_coin_data()
         return {"data": data}  # JSON 형식으로 반환
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching coin data: {str(e)}")
+        error_message = f"Error fetching coin data: {str(e)}"
+        print(error_message)  # 콘솔에 에러 메시지 출력
+        raise HTTPException(status_code=500, detail=error_message)
 
 @app.get("/trade-history/")
 async def trade_history():
