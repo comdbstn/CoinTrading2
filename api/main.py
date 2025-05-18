@@ -49,7 +49,11 @@ async def upload_file(file: UploadFile = File(...)):
 
 # Mock function to get real-time coin data
 def get_real_time_coin_data():
-    return {"BTC": 50000, "ETH": 4000}  # Example data
+    try:
+        # 실제 API 호출 로직을 여기에 추가
+        return {"BTC": 50000, "ETH": 4000}  # 예제 데이터
+    except Exception as e:
+        raise Exception(f"Error in get_real_time_coin_data: {str(e)}")
 
 # Mock function to analyze trade history
 def analyze_trade_history():
