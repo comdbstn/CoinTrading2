@@ -44,10 +44,13 @@ async def upload_file(file: UploadFile = File(...)):
         # Read Excel file
         df = pd.read_excel(contents)
         # Extract trade times from Excel
-        trade_times = df['Trade Time'].tolist()  # Assuming 'Trade Time' is a column in the Excel file
+        if 'Trade Time' in df.columns:
+            trade_times = df['Trade Time'].tolist()
+        else:
+            raise Exception("'Trade Time' column not found in Excel file")
         return {"filename": file.filename, "content_type": file.content_type, "trade_times": trade_times}
     except Exception as e:
-        raise HTTPException(status_code=400, detail="Invalid Excel file")
+        raise HTTPException(status_code=400, detail=f"Invalid Excel file: {str(e)}")
 
 # Mock function to get real-time coin data
 def get_real_time_coin_data():
@@ -69,7 +72,11 @@ def get_real_time_coin_data():
 
 # Mock function to analyze trade history
 def analyze_trade_history():
-    return "Trade history analysis result"
+    try:
+        # 실제 거래 내역 분석 로직을 여기에 추가
+        return "Trade history analysis result"
+    except Exception as e:
+        raise Exception(f"Error in analyze_trade_history: {str(e)}")
 
 @app.get("/coin-data/")
 async def coin_data():
