@@ -3,8 +3,18 @@ import openai
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from pydantic import BaseModel
 import pandas as pd
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(debug=True)
+
+# CORS 설정 추가
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 모든 도메인 허용
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -13,14 +23,17 @@ class TradingCode(BaseModel):
 
 @app.post("/submit-code/")
 async def submit_code(trading_code: TradingCode):
-    # Compare trade times with current code logic
-    comparison_result = "Comparison result between code and trade times"
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=f"Analyze and optimize the following trading code: {trading_code.code}. {comparison_result}",
-        max_tokens=150
-    )
-    return {"message": "Code received", "optimized_code": response.choices[0].text.strip()}
+    try:
+        # Compare trade times with current code logic
+        comparison_result = "Comparison result between code and trade times"
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=f"Analyze and optimize the following trading code: {trading_code.code}. {comparison_result}",
+            max_tokens=150
+        )
+        return {"message": "Code received", "optimized_code": response.choices[0].text.strip()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error submitting code: {str(e)}")
 
 @app.post("/upload-file/")
 async def upload_file(file: UploadFile = File(...)):
@@ -48,7 +61,7 @@ async def coin_data():
         data = get_real_time_coin_data()
         return {"data": data}  # JSON 형식으로 반환
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Error fetching coin data: {str(e)}")
 
 @app.get("/trade-history/")
 async def trade_history():
