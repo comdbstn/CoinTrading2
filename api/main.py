@@ -4,6 +4,8 @@ from fastapi import FastAPI, File, UploadFile, HTTPException
 from pydantic import BaseModel
 import pandas as pd
 from fastapi.middleware.cors import CORSMiddleware
+import requests
+import time
 
 app = FastAPI(debug=True)
 
@@ -50,8 +52,18 @@ async def upload_file(file: UploadFile = File(...)):
 # Mock function to get real-time coin data
 def get_real_time_coin_data():
     try:
-        # 실제 API 호출 로직을 여기에 추가
-        return {"BTC": 50000, "ETH": 4000}  # 예제 데이터
+        api_key = os.getenv("COINBASE_API_KEY")
+        api_secret = os.getenv("COINBASE_API_SECRET")
+        headers = {
+            'CB-ACCESS-KEY': api_key,
+            'CB-ACCESS-SIGN': api_secret,
+            'CB-ACCESS-TIMESTAMP': str(int(time.time())),
+            'Content-Type': 'application/json'
+        }
+        response = requests.get('https://api.coinbase.com/v2/prices/spot?currency=USD', headers=headers)
+        response.raise_for_status()
+        data = response.json()
+        return data
     except Exception as e:
         raise Exception(f"Error in get_real_time_coin_data: {str(e)}")
 
