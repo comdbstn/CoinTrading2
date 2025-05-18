@@ -47,6 +47,15 @@ async def submit_code(trading_code: TradingCode):
 async def upload_file(file: UploadFile = File(...)):
     contents = await file.read()
     try:
+        # 파일 크기 검증 (예: 5MB 이하)
+        max_file_size = 5 * 1024 * 1024  # 5MB
+        if len(contents) > max_file_size:
+            raise HTTPException(status_code=400, detail="File size exceeds the 5MB limit")
+
+        # 파일 형식 검증
+        if not file.filename.endswith('.xlsx'):
+            raise HTTPException(status_code=400, detail="Only .xlsx files are supported")
+
         # Read Excel file
         df = pd.read_excel(contents)
         # Extract trade times from Excel
@@ -77,6 +86,10 @@ def get_real_time_coin_data():
         error_message = f"Request error in get_real_time_coin_data: {str(e)}"
         print(error_message)  # 콘솔에 에러 메시지 출력
         raise Exception(error_message)
+    except requests.exceptions.HTTPError as e:
+        error_message = f"HTTP error in get_real_time_coin_data: {str(e)}"
+        print(error_message)  # 콘솔에 에러 메시지 출력
+        raise Exception(error_message)
     except Exception as e:
         error_message = f"Error in get_real_time_coin_data: {str(e)}"
         print(error_message)  # 콘솔에 에러 메시지 출력
@@ -86,7 +99,11 @@ def get_real_time_coin_data():
 def analyze_trade_history():
     try:
         # 실제 거래 내역 분석 로직을 여기에 추가
-        return "Trade history analysis result"
+        # 예시: 거래 내역을 데이터베이스에서 가져와 분석
+        trade_data = []  # 데이터베이스에서 가져온 거래 내역
+        # 거래 내역 분석 로직
+        analysis_result = "Analyzed trade history result"
+        return analysis_result
     except Exception as e:
         raise Exception(f"Error in analyze_trade_history: {str(e)}")
 
