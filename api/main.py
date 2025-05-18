@@ -34,8 +34,14 @@ async def submit_code(trading_code: TradingCode):
             max_tokens=150
         )
         return {"message": "Code received", "optimized_code": response.choices[0].text.strip()}
+    except openai.error.OpenAIError as e:
+        error_message = f"OpenAI API error in submit_code: {str(e)}"
+        print(error_message)  # 콘솔에 에러 메시지 출력
+        raise HTTPException(status_code=500, detail=error_message)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error submitting code: {str(e)}")
+        error_message = f"Error in submit_code: {str(e)}"
+        print(error_message)  # 콘솔에 에러 메시지 출력
+        raise HTTPException(status_code=500, detail=error_message)
 
 @app.post("/upload-file/")
 async def upload_file(file: UploadFile = File(...)):
