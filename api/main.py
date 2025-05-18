@@ -80,7 +80,12 @@ def get_real_time_coin_data():
         }
         response = requests.get('https://api.coinbase.com/v2/prices/spot?currency=USD', headers=headers)
         response.raise_for_status()
-        data = response.json()
+        try:
+            data = response.json()
+        except ValueError as e:
+            error_message = f"Invalid JSON response: {str(e)}"
+            print(error_message)  # 콘솔에 에러 메시지 출력
+            raise Exception(error_message)
         return data
     except requests.exceptions.RequestException as e:
         error_message = f"Request error in get_real_time_coin_data: {str(e)}"
