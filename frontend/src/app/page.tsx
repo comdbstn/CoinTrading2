@@ -18,7 +18,7 @@ export default function Home() {
   useEffect(() => {
     const fetchCoinData = async () => {
       try {
-        const response = await fetch('/api/coin-data/');
+        const response = await fetch('https://coin-trading2-6o3e.vercel.app/api/coin-data/');
         const data = await response.json();
         setCoinData(data);
       } catch (error) {
@@ -30,7 +30,7 @@ export default function Home() {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('/api/submit-code/', {
+      const response = await fetch('https://coin-trading2-6o3e.vercel.app/api/submit-code/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
