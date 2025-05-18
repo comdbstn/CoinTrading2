@@ -76,6 +76,10 @@ export default function Home() {
         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Analysis Result:</Typography>
         <pre>{analysisResult}</pre>
       </Box>
+      <Box sx={{ mt: 4 }}>
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Debug Information:</Typography>
+        <pre>{JSON.stringify({ coinData, analysisResult }, null, 2)}</pre>
+      </Box>
     </Container>
   );
 }
