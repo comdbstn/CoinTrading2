@@ -2,7 +2,7 @@
   "name": "cointrading2-root",
   "private": true,
   "scripts": {
-    "vercel-build": "cd frontend && npm install && npm run build"
+    "vercel-build": "cd frontend && npm install tailwindcss autoprefixer postcss --no-save && npm install && npm run build"
   },
   "dependencies": {
     "next": "15.3.2"
