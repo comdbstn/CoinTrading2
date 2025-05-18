@@ -4,7 +4,7 @@ from fastapi import FastAPI, File, UploadFile, HTTPException
 from pydantic import BaseModel
 import pandas as pd
 
-app = FastAPI()
+app = FastAPI(debug=True)
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -13,9 +13,11 @@ class TradingCode(BaseModel):
 
 @app.post("/submit-code/")
 async def submit_code(trading_code: TradingCode):
+    # Compare trade times with current code logic
+    comparison_result = "Comparison result between code and trade times"
     response = openai.Completion.create(
         engine="text-davinci-003",
-        prompt=f"Analyze and optimize the following trading code: {trading_code.code}",
+        prompt=f"Analyze and optimize the following trading code: {trading_code.code}. {comparison_result}",
         max_tokens=150
     )
     return {"message": "Code received", "optimized_code": response.choices[0].text.strip()}
@@ -26,9 +28,9 @@ async def upload_file(file: UploadFile = File(...)):
     try:
         # Read Excel file
         df = pd.read_excel(contents)
-        # Process the data as needed
-        processed_data = df.describe().to_dict()
-        return {"filename": file.filename, "content_type": file.content_type, "data": processed_data}
+        # Extract trade times from Excel
+        trade_times = df['Trade Time'].tolist()  # Assuming 'Trade Time' is a column in the Excel file
+        return {"filename": file.filename, "content_type": file.content_type, "trade_times": trade_times}
     except Exception as e:
         raise HTTPException(status_code=400, detail="Invalid Excel file")
 
@@ -44,7 +46,7 @@ def analyze_trade_history():
 async def coin_data():
     try:
         data = get_real_time_coin_data()
-        return data
+        return {"data": data}  # JSON 형식으로 반환
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
