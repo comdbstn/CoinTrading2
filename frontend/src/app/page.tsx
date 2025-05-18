@@ -45,7 +45,7 @@ export default function Home() {
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
+    <Container maxWidth="md" sx={{ mt: 4, bgcolor: 'white', color: 'black' }}>
       <Typography variant="h4" component="h1" gutterBottom align="center">
         Trading Code Analyzer
       </Typography>
