@@ -45,34 +45,35 @@ export default function Home() {
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4, bgcolor: 'white', color: 'black' }}>
-      <Typography variant="h4" component="h1" gutterBottom align="center">
+    <Container maxWidth="md" sx={{ mt: 4, bgcolor: 'white', color: 'black', p: 3, borderRadius: 2, boxShadow: 3 }}>
+      <Typography variant="h4" component="h1" gutterBottom align="center" sx={{ fontWeight: 'bold', mb: 3 }}>
         Trading Code Analyzer
       </Typography>
-      <Box sx={{ mb: 2 }}>
+      <Box sx={{ mb: 3 }}>
         <TextField
           label="TradingView Code"
           multiline
-          rows={4}
+          rows={6}
           variant="outlined"
           fullWidth
           margin="normal"
           value={tradingCode}
           onChange={(e) => setTradingCode(e.target.value)}
+          sx={{ bgcolor: 'white', borderRadius: 1 }}
         />
       </Box>
-      <Box sx={{ mb: 2 }}>
-        <Input type="file" onChange={handleFileChange} fullWidth />
+      <Box sx={{ mb: 3 }}>
+        <Input type="file" onChange={handleFileChange} fullWidth sx={{ bgcolor: 'white', p: 1, borderRadius: 1 }} />
       </Box>
-      <Box sx={{ textAlign: 'center' }}>
-        <Button variant="contained" color="primary" size="large" onClick={handleSubmit}>Submit</Button>
+      <Box sx={{ textAlign: 'center', mb: 3 }}>
+        <Button variant="contained" color="primary" size="large" onClick={handleSubmit} sx={{ fontWeight: 'bold' }}>Submit</Button>
       </Box>
       <Box sx={{ mt: 4 }}>
-        <Typography variant="h6">Real-time Coin Data:</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Real-time Coin Data:</Typography>
         <pre>{JSON.stringify(coinData, null, 2)}</pre>
       </Box>
       <Box sx={{ mt: 4 }}>
-        <Typography variant="h6">Analysis Result:</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Analysis Result:</Typography>
         <pre>{analysisResult}</pre>
       </Box>
     </Container>
