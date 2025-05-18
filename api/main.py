@@ -67,8 +67,14 @@ def get_real_time_coin_data():
         response.raise_for_status()
         data = response.json()
         return data
+    except requests.exceptions.RequestException as e:
+        error_message = f"Request error in get_real_time_coin_data: {str(e)}"
+        print(error_message)  # 콘솔에 에러 메시지 출력
+        raise Exception(error_message)
     except Exception as e:
-        raise Exception(f"Error in get_real_time_coin_data: {str(e)}")
+        error_message = f"Error in get_real_time_coin_data: {str(e)}"
+        print(error_message)  # 콘솔에 에러 메시지 출력
+        raise Exception(error_message)
 
 # Mock function to analyze trade history
 def analyze_trade_history():
