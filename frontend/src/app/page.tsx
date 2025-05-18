@@ -2,17 +2,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { Container, TextField, Button, Typography, Input, Box } from '@mui/material';
-import Image from "next/image";
 
 export default function Home() {
-  const [file, setFile] = useState<File | null>(null);
   const [coinData, setCoinData] = useState({});
   const [tradingCode, setTradingCode] = useState("");
   const [analysisResult, setAnalysisResult] = useState("");
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      setFile(event.target.files[0]);
+      // setFile(event.target.files[0]);
     }
   };
 
