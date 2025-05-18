@@ -2,4 +2,5 @@ fastapi
 uvicorn
 pandas
 requests
-openai 
+openai
+python-multipart 
