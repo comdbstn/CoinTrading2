@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Container, TextField, Button, Typography, Input, Box } from '@mui/material';
 
 export default function Home() {
-  const [coinData, setCoinData] = useState({});
   const [tradingCode, setTradingCode] = useState("");
   const [analysisResult, setAnalysisResult] = useState("");
 
@@ -15,22 +14,9 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    const fetchCoinData = async () => {
-      try {
-        const response = await fetch('/api/coin-data/');
-        const data = await response.json();
-        setCoinData(data);
-      } catch (error) {
-        console.error('Error fetching coin data:', error);
-      }
-    };
-    fetchCoinData();
-  }, []);
-
   const handleSubmit = async () => {
     try {
-      const response = await fetch('https://coin-trading2-6o3e.vercel.app/api/submit-code/', {
+      const response = await fetch('/api/submit-code/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,16 +55,8 @@ export default function Home() {
         <Button variant="contained" color="primary" size="large" onClick={handleSubmit} sx={{ fontWeight: 'bold' }}>Submit</Button>
       </Box>
       <Box sx={{ mt: 4 }}>
-        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Real-time Coin Data:</Typography>
-        <pre>{JSON.stringify(coinData, null, 2)}</pre>
-      </Box>
-      <Box sx={{ mt: 4 }}>
         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Analysis Result:</Typography>
         <pre>{analysisResult}</pre>
-      </Box>
-      <Box sx={{ mt: 4 }}>
-        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Debug Information:</Typography>
-        <pre>{JSON.stringify({ coinData, analysisResult }, null, 2)}</pre>
       </Box>
     </Container>
   );
